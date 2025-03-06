@@ -14,3 +14,5 @@ export const workspaces = pgTable("workspaces", {
   inTrash: text("in_trash"),
   bannerUrl: text("banner_url"),
 });
+
+
