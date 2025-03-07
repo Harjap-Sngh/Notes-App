@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "pull": "drizzle-kit pull ",
+    "pull": "drizzle-kit pull --dialect=postgresql --url=postgresql://postgres.qklvfydgsfasuzelpesb:harjap9463628874@aws-0-us-west-1.pooler.supabase.com:6543/postgres --out=migrations",
     "generate": "drizzle-kit generate",
     "drop": "drizzle-kit drop",
     "check": "drizzle-kit check",
@@ -17,6 +17,7 @@
     "dotenv": "^16.4.7",
     "drizzle-orm": "^0.40.0",
     "next": "15.2.1",
+    "pg": "^8.13.3",
     "postgres": "^3.4.5",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
