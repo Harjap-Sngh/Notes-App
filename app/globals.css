@@ -187,3 +187,7 @@ body {
     --chart-5: 340 75% 55%;
   }
 }
+
+@theme {
+  --color-washedBlue-50: "#f0f3ff";
+}
