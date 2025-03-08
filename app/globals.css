@@ -2,8 +2,6 @@
 
 @plugin "tailwindcss-animate";
 
-@custom-variant dark (&:is(.dark *));
-
 html,
 body {
   height: 100%;
@@ -189,5 +187,62 @@ body {
 }
 
 @theme {
-  --color-washedBlue-50: "#f0f3ff";
+  --color-washed-blue-50: #f0f3ff;
+  --color-washed-blue-100: #d0daff;
+  --color-washed-blue-200: #bac9ff;
+  --color-washed-blue-300: #9ab0ff;
+  --color-washed-blue-400: #86a1ff;
+  --color-washed-blue-500: #6889ff;
+  --color-washed-blue-600: #5f7de8;
+  --color-washed-blue-700: #4a61b5;
+  --color-washed-blue-800: #394b8c;
+  --color-washed-blue-900: #2c3a6b;
+  --color-washed-purple-50: #f8f7ff;
+  --color-washed-purple-100: #e8e7ff;
+  --color-washed-purple-200: #dddcff;
+  --color-washed-purple-300: #cecbff;
+  --color-washed-purple-400: #c5c1ff;
+  --color-washed-purple-500: #b6b2ff;
+  --color-washed-purple-600: #a6a2e8;
+  --color-washed-purple-700: #817eb5;
+  --color-washed-purple-800: #64628c;
+  --color-washed-purple-900: #4c4b6b;
+  --color-primary-blue-50: #e6f0ff;
+  --color-primary-blue-100: #b2d1ff;
+  --color-primary-blue-200: #8cbaff;
+  --color-primary-blue-300: #589bff;
+  --color-primary-blue-400: #3787ff;
+  --color-primary-blue-500: #0569ff;
+  --color-primary-blue-600: #0560e8;
+  --color-primary-blue-700: #044bb5;
+  --color-primary-blue-800: #033a8c;
+  --color-primary-blue-900: #022c6b;
+  --color-primary-purple-50: #f1e6ff;
+  --color-primary-purple-100: #d3b0ff;
+  --color-primary-purple-200: #bd8aff;
+  --color-primary-purple-300: #9f54ff;
+  --color-primary-purple-400: #8d33ff;
+  --color-primary-purple-500: #7000ff;
+  --color-primary-purple-600: #6600e8;
+  --color-primary-purple-700: #5000b5;
+  --color-primary-purple-800: #3e008c;
+  --color-primary-purple-900: #2f006b;
+  --color-Neutrals-1: #ffffff;
+  --color-Neutrals-2: #fcfcfd;
+  --color-Neutrals-3: #f5f5f6;
+  --color-Neutrals-4: #f0f0f1;
+  --color-Neutrals-5: #d9d9dc;
+  --color-Neutrals-6: #c0bfc4;
+  --color-Neutrals-7: #8d8c95;
+  --color-Neutrals-8: #5b5966;
+  --color-Neutrals-9: #464553;
+  --color-Neutrals-10: #282637;
+  --color-Neutrals-11: #201f30;
+  --color-Neutrals-12: #161427;
+  --color-Neutrals-13: #020014;
+  --color-brand-washedPurple: #b5b2ff;
+  --color-brand-washedBlue: #6889ff;
+  --color-brand-primaryBlue: #0469ff;
+  --color-brand-primaryPurple: #7000ff;
+  --color-brand-dark: #030014;
 }
