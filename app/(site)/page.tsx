@@ -35,19 +35,23 @@ const HomePage = () => {
         
         before:content[''] before:dark:from-brand-dark before:to-transparent before:from-background before:bg-gradient-to-r before:left-0 before:top-0 before:bottom-0 before:w-20 before:z-10 before:content[''] before:absolute"
         >
-          {CLIENTS.map((client) => (
-            <div
-              key={client.alt}
-              className="flex items-center justify-center p-4 sm:p-8"
-            >
-              <Image src={client.logo} alt={client.alt} />
+          {[...Array(2)].map((arr) => (
+            <div key={arr} className="flex flex-nowrap animate-slide">
+              {CLIENTS.map((client) => (
+                <div
+                  key={client.alt}
+                  className="flex items-center justify-center p-4 sm:p-8"
+                >
+                  <Image
+                    src={client.logo}
+                    alt={client.alt}
+                    width={200}
+                    className="mex-w-none"
+                  />
+                </div>
+              ))}
             </div>
           ))}
-          {[
-            ...Array(2).map((arr) => (
-              <div key={arr} className="flex flex-nowrap animate-slide"></div>
-            )),
-          ]}
         </div>
       </section>
     </>
