@@ -43,6 +43,11 @@ const HomePage = () => {
               <Image src={client.logo} alt={client.alt} />
             </div>
           ))}
+          {[
+            ...Array(2).map((arr) => (
+              <div key={arr} className="flex flex-nowrap animate-slide"></div>
+            )),
+          ]}
         </div>
       </section>
     </>
