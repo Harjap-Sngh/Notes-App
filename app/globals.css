@@ -245,4 +245,15 @@ body {
   --color-brand-primaryBlue: #0469ff;
   --color-brand-primaryPurple: #7000ff;
   --color-brand-dark: #030014;
+
+  --animate-slide: slide 15s linear infinite;
+
+  @keyframes slide {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
 }

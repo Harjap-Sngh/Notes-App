@@ -4,6 +4,7 @@ import Image from "next/image";
 import React from "react";
 import Banner from "../../public/appBanner.png";
 import { CLIENTS } from "@/lib/constants";
+import Calender from "../../public/cal.png";
 
 const HomePage = () => {
   return (
@@ -35,8 +36,8 @@ const HomePage = () => {
         
         before:content[''] before:dark:from-brand-dark before:to-transparent before:from-background before:bg-gradient-to-r before:left-0 before:top-0 before:bottom-0 before:w-20 before:z-10 before:content[''] before:absolute"
         >
-          {[...Array(2)].map((arr) => (
-            <div key={arr} className="flex flex-nowrap animate-slide">
+          {[...Array(2)].map((arr, index) => (
+            <div key={index} className="flex flex-nowrap animate-slide">
               {CLIENTS.map((client) => (
                 <div
                   key={client.alt}
@@ -46,12 +47,26 @@ const HomePage = () => {
                     src={client.logo}
                     alt={client.alt}
                     width={200}
-                    className="mex-w-none"
+                    className="object-contain max-w-none"
                   />
                 </div>
               ))}
             </div>
           ))}
+        </div>
+      </section>
+
+      <section className="px-4 sm:px-6 flex justify-center items-center flex-col relative">
+        <div className="w-[30%] blur-[120px] rounded-full h-32 absolute bg-brand-primaryPurple/50">
+          <Title
+            pill="🚀"
+            title="Keep track of meetings all in one place"
+            subheading="Cypress is the all-in-one platform for teams that want to build better software, faster."
+          />
+          {/*
+          <div className="mt-10 max-w-[450px] flex justify-center items-center relative sm:ml-0 rounded-2xl border-8 border-washed-purple-300 border-opacity-10">
+            <Image src={Calender} alt="Banner" className="rounded-2xl" />
+          </div> */}
         </div>
       </section>
     </>
