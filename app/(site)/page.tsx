@@ -8,7 +8,7 @@ import Calender from "../../public/cal.png";
 
 const HomePage = () => {
   return (
-    <>
+    <div className="overflow-hidden">
       <section id="home" className="bg-background dark:bg-black">
         <div className="overflow-hidden px-4 sm:px-6 mt-10 sm:flex sm:flex-col gap-4 md:justify-center md:items-center">
           <Title
@@ -56,19 +56,18 @@ const HomePage = () => {
         </div>
       </section>
 
-      <section className="px-4 sm:px-6 flex justify-center items-center flex-col relative">
-        <div className="w-[30%] blur-[120px] rounded-full h-32 absolute bg-brand-primaryPurple/50">
-          <Title
-            title="Keep track of meetings all in one place"
-            subheading="Cypress is the all-in-one platform for teams that want to build better software, faster."
-          />
-          {/*
-          <div className="mt-10 max-w-[450px] flex justify-center items-center relative sm:ml-0 rounded-2xl border-8 border-washed-purple-300 border-opacity-10">
-            <Image src={Calender} alt="Banner" className="rounded-2xl" />
-          </div> */}
+      <section className="px-4 m-48 sm:px-6 flex justify-center items-center flex-col relative">
+        <div className="w-[30%] blur-[120px] rounded-full h-32 absolute bg-brand-primaryPurple/50"></div>
+        <Title
+          pill="📅 Organise you tasks"
+          title="Keep track of meetings all in one place"
+          subheading="Cypress is the all-in-one platform for teams that want to build better software, faster."
+        />
+        <div className="mt-10 max-w-[750px] flex justify-center items-center relative sm:ml-0 rounded-2xl border-8 border-washed-purple-300 border-opacity-10">
+          <Image src={Calender} alt="Banner" className="rounded-2xl" />
         </div>
       </section>
-    </>
+    </div>
   );
 };
 
