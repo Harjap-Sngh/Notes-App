@@ -59,7 +59,6 @@ const HomePage = () => {
       <section className="px-4 sm:px-6 flex justify-center items-center flex-col relative">
         <div className="w-[30%] blur-[120px] rounded-full h-32 absolute bg-brand-primaryPurple/50">
           <Title
-            pill="🚀"
             title="Keep track of meetings all in one place"
             subheading="Cypress is the all-in-one platform for teams that want to build better software, faster."
           />

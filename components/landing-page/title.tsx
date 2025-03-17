@@ -3,7 +3,7 @@ import React from "react";
 interface Titleprops {
   title: string;
   subheading?: string;
-  pill: string;
+  pill?: string;
 }
 
 const Title: React.FC<Titleprops> = ({ title, subheading, pill }) => {
