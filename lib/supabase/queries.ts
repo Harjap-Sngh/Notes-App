@@ -1,6 +1,6 @@
 'use server';
 import { validate } from 'uuid';
-import { files, folders, users, workspaces } from '../../migrations/schema';
+import { files, folders, users, workspaces, products } from '../../migrations/schema';
 import db from './db';
 import { File, Folder, Subscription, User, workspace } from './supabase.types';
 import { and, eq, ilike, notExists } from 'drizzle-orm';
@@ -84,10 +84,10 @@ export const getFileDetails = async (fileId: string) => {
   }
   try {
     const response = (await db
-      .select()
-      .from(files)
-      .where(eq(files.id, fileId))
-      .limit(1)) as File[];
+        .select()
+        .from(files)
+        .where(eq(files.id, fileId))
+        .limit(1)) as unknown as File[];
     return { data: response, error: null };
   } catch (error) {
     console.log('🔴Error', error);
@@ -245,9 +245,12 @@ export const removeCollaborators = async (
 };
 
 export const findUser = async (userId: string) => {
-  const response = await db.query.users.findFirst({
-    where: (u, { eq }) => eq(u.id, userId),
-  });
+  const response = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, userId))
+    .limit(1)
+    .then((res) => res[0]);
   return response;
 };
 
@@ -282,7 +285,7 @@ export const createFolder = async (folder: Folder) => {
 
 export const createFile = async (file: File) => {
   try {
-    await db.insert(files).values(file);
+    await db.insert(files).values({ ...file, workspaceOwner: file.workspaceOwner || 'defaultOwner' });
     return { data: null, error: null };
   } catch (error) {
     console.log(error);
@@ -341,9 +344,11 @@ export const getCollaborators = async (workspaceId: string) => {
   if (!response.length) return [];
   const userInformation: Promise<User | undefined>[] = response.map(
     async (user) => {
-      const exists = await db.query.users.findFirst({
-        where: (u, { eq }) => eq(u.id, user.userId),
-      });
+      const exists = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, user.userId))
+        .then((res) => res[0]);
       return exists;
     }
   );
