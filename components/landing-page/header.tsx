@@ -228,8 +228,7 @@ const Header = () => {
       "
       >
         <Link href={'/login'}>
-          <Button
-            variant="btn-secondary"
+          <Button variant="btn-secondary"
             className=" p-1 hidden sm:block"
           >
             Login
