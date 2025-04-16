@@ -228,20 +228,20 @@ const Header = () => {
       "
       >
         <Link href={'/login'}>
-          <Button variant="btn-secondary"
+          <Button 
             className=" p-1 hidden sm:block"
           >
             Login
           </Button>
         </Link>
-        <Link href="/signup">
           <Button
-            variant="btn-primary"
-            className="whitespace-nowrap"
-          >
+            
+            className="whitespace-nowrap">
+        <Link href="/signup">
             Sign Up
+             </Link>
           </Button>
-        </Link>
+       
       </aside>
     </header>
   );

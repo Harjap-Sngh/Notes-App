@@ -1,5 +1,11 @@
 'use client';
-import { Button } from '@/components/ui/button';
+
+import { useRouter, useSearchParams } from 'next/navigation';
+import React, { useMemo, useState } from 'react';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import * as z from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import clsx from 'clsx';
 import {
   Form,
   FormControl,
@@ -8,30 +14,20 @@ import {
   FormItem,
   FormMessage,
 } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import clsx from 'clsx';
-import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter, useSearchParams } from 'next/navigation';
-import React, { useMemo, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { z } from 'zod';
-
+import Image from 'next/image';
 import Logo from '@/public/cypresslogo.svg';
+import { Input } from '@/components/ui/input';
+import { Button } from '@/components/ui/button';
 import Loader from '@/components/global/Loader';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { MailCheck } from 'lucide-react';
-import { FormSchema } from '@/lib/types';
-import { actionSignUpUser } from '@/lib/server-actions/auth-actions';
+import { useAuth } from '@/context/authcontext'; // Adjust path accordingly
 
 const SignUpFormSchema = z
   .object({
     email: z.string().describe('Email').email({ message: 'Invalid Email' }),
-    password: z
-      .string()
-      .describe('Password')
-      .min(6, 'Password must be minimum 6 characters'),
+    password: z.string().describe('Password').min(6, 'Password must be minimum 6 characters'),
     confirmPassword: z
       .string()
       .describe('Confirm Password')
@@ -42,12 +38,16 @@ const SignUpFormSchema = z
     path: ['confirmPassword'],
   });
 
-const Signup = () => {
+const SignupPage = () => {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { signUp } = useAuth();
   const [submitError, setSubmitError] = useState('');
-  const [confirmation, setConfirmation] = useState(false);
+  
+  // We no longer need to set a confirmation state if we want to redirect immediately
+  // const [confirmation, setConfirmation] = useState(false);
 
+  // Optional: handle code exchange error if you use it elsewhere
   const codeExchangeError = useMemo(() => {
     if (!searchParams) return '';
     return searchParams.get('error_description');
@@ -70,14 +70,15 @@ const Signup = () => {
   });
 
   const isLoading = form.formState.isSubmitting;
-  const onSubmit = async ({ email, password }: z.infer<typeof FormSchema>) => {
-    const { error } = await actionSignUpUser({ email, password });
-    if (error) {
+  const onSubmit: SubmitHandler<z.infer<typeof SignUpFormSchema>> = async (data) => {
+    try {
+      await signUp(data.email, data.password);
+      // Redirect to dashboard after successful sign up
+      router.replace('/dashboard');
+    } catch (error: any) {
       setSubmitError(error.message);
       form.reset();
-      return;
     }
-    setConfirmation(true);
   };
 
   return (
@@ -87,39 +88,17 @@ const Signup = () => {
           if (submitError) setSubmitError('');
         }}
         onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full sm:justify-center sm:w-[400px]
-        space-y-6 flex
-        flex-col
-        "
+        className="w-full sm:justify-center sm:w-[400px] space-y-6 flex flex-col"
       >
-        <Link
-          href="/"
-          className="
-          w-full
-          flex
-          justify-left
-          items-center"
-        >
-          <Image
-            src={Logo}
-            alt="cypress Logo"
-            width={50}
-            height={50}
-          />
-          <span
-            className="font-semibold
-          dark:text-white text-4xl first-letter:ml-2"
-          >
-            cypress.
-          </span>
+        <Link href="/" className="w-full flex justify-left items-center">
+          <Image src={Logo} alt="cypress Logo" width={50} height={50} />
+          <span className="font-semibold dark:text-white text-4xl first-letter:ml-2">cypress.</span>
         </Link>
-        <FormDescription
-          className="
-        text-foreground/60"
-        >
+        <FormDescription className="text-foreground/60">
           An all-In-One Collaboration and Productivity Platform
         </FormDescription>
-        {!confirmation && !codeExchangeError && (
+        {/* If you're not using email confirmation, you can remove the conditional rendering */}
+        {(!codeExchangeError) && (
           <>
             <FormField
               disabled={isLoading}
@@ -128,11 +107,7 @@ const Signup = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      type="email"
-                      placeholder="Email"
-                      {...field}
-                    />
+                    <Input type="email" placeholder="Email" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -145,11 +120,7 @@ const Signup = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Password"
-                      {...field}
-                    />
+                    <Input type="password" placeholder="Password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -162,52 +133,37 @@ const Signup = () => {
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Input
-                      type="password"
-                      placeholder="Confirm Password"
-                      {...field}
-                    />
+                    <Input type="password" placeholder="Confirm Password" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <Button
-              type="submit"
-              className="w-full p-6"
-              disabled={isLoading}
-            >
+            <Button type="submit" className="w-full p-6" disabled={isLoading}>
               {!isLoading ? 'Create Account' : <Loader />}
             </Button>
           </>
         )}
-
         {submitError && <FormMessage>{submitError}</FormMessage>}
         <span className="self-container">
           Already have an account?{' '}
-          <Link
-            href="/login"
-            className="text-primary"
-          >
+          <Link href="/login" className="text-primary">
             Login
           </Link>
         </span>
-        {(confirmation || codeExchangeError) && (
-          <>
-            <Alert className={confirmationAndErrorStyles}>
-              {!codeExchangeError && <MailCheck className="h-4 w-4" />}
-              <AlertTitle>
-                {codeExchangeError ? 'Invalid Link' : 'Check your email.'}
-              </AlertTitle>
-              <AlertDescription>
-                {codeExchangeError || 'An email confirmation has been sent.'}
-              </AlertDescription>
-            </Alert>
-          </>
+        {(codeExchangeError) && (
+          <Alert className={confirmationAndErrorStyles}>
+            <AlertTitle>
+              {codeExchangeError ? 'Invalid Link' : 'Check your email.'}
+            </AlertTitle>
+            <AlertDescription>
+              {codeExchangeError || 'An email confirmation has been sent.'}
+            </AlertDescription>
+          </Alert>
         )}
       </form>
     </Form>
   );
 };
 
-export default Signup;
+export default SignupPage;

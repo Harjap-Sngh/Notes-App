@@ -1,7 +1,9 @@
-import type { NextConfig } from "next";
-
-const nextConfig: NextConfig = {
-  /* config options here */
+/** @type {import('next').NextConfig} */
+const nextConfig = {
+  experimental: {
+    // Tell Turbopack to transpile @supabase/node-fetch
+    transpilePackages: ["@supabase/node-fetch"],
+  },
 };
 
-export default nextConfig;
+module.exports = nextConfig;
