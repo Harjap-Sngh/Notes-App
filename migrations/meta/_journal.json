@@ -22,6 +22,13 @@
       "when": 1741326288991,
       "tag": "0002_mushy_frog_thor",
       "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1744835479335,
+      "tag": "0003_salty_caretaker",
+      "breakpoints": true
     }
   ]
 }
