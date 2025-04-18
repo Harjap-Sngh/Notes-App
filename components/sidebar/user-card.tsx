@@ -1,7 +1,6 @@
 import React from 'react';
 import { Subscription } from '@/lib/supabase/supabase.types';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
+import { createClient } from '@/lib/utils/supabase/server';
 import db from '@/lib/supabase/db';
 import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar';
 import CypressProfileIcon from '../icons/cypressProfileIcon';
@@ -14,7 +13,7 @@ interface UserCardProps {
 }
 
 const UserCard: React.FC<UserCardProps> = async ({ subscription }) => {
-  const supabase = createServerComponentClient({ cookies });
+  const supabase = await createClient();
   const {
     data: { user },
   } = await supabase.auth.getUser();

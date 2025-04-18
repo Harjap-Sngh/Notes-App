@@ -1,11 +1,11 @@
-'use client';
+"use client";
 
-import { AuthUser } from '@supabase/supabase-js';
-import { Subscription } from '../supabase/supabase.types';
-import { createContext, useContext, useEffect, useState } from 'react';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { getUserSubscriptionStatus } from '../supabase/queries';
-import { useToast } from '@/components/ui/use-toast';
+import { AuthUser } from "@supabase/supabase-js";
+import { Subscription } from "../supabase/supabase.types";
+import { createContext, useContext, useEffect, useState } from "react";
+import { getUserSubscriptionStatus } from "../supabase/queries";
+import { useToast } from "@/components/ui/use-toast";
+import { createClient } from "../utils/supabase/client";
 
 type SupabaseUserContextType = {
   user: AuthUser | null;
@@ -32,7 +32,7 @@ export const SupabaseUserProvider: React.FC<SupabaseUserProviderProps> = ({
   const [subscription, setSubscription] = useState<Subscription | null>(null);
   const { toast } = useToast();
 
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
 
   //Fetch the user details
   //subscrip
@@ -48,9 +48,9 @@ export const SupabaseUserProvider: React.FC<SupabaseUserProviderProps> = ({
         if (data) setSubscription(data);
         if (error) {
           toast({
-            title: 'Unexpected Error',
+            title: "Unexpected Error",
             description:
-              'Oppse! An unexpected error happened. Try again later.',
+              "Oppse! An unexpected error happened. Try again later.",
           });
         }
       }

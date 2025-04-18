@@ -6,30 +6,19 @@ import { redirect } from "next/navigation";
 import React from "react";
 
 const Workspace = async ({ params }: { params: { workspaceId: string } }) => {
-  if (!params.workspaceId) {
+  const { workspaceId } = await params;
+  if (!workspaceId) {
     redirect("/dashboard");
     return null;
   }
-  // Fetch workspace details
-  // const { data, error } = await getWorkspaceDetails(params.workspaceId);
-  // if (error || !data.length) redirect("/dashboard");
-  // return (
-  //   <div className="relative">
-  //     <QuillEditor
-  //       dirType="workspace"
-  //       fileId={params.workspaceId}
-  //       dirDetails={data[0] || {}}
-  //     />
-  //   </div>
-  // );
 
-  const { data, error } = await getWorkspaceDetails(params.workspaceId);
+  const { data, error } = await getWorkspaceDetails(workspaceId);
   if (error || !data.length) redirect("/dashboard");
   return (
     <div className="relative">
       <QuillEditor
         dirType="workspace"
-        fileId={params.workspaceId}
+        fileId={workspaceId}
         dirDetails={data[0] || {}}
       />
     </div>
