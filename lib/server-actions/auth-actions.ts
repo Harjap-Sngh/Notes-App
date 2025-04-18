@@ -1,16 +1,15 @@
-'use server';
+"use server";
 
-import { z } from 'zod';
-import { createServerActionClient } from '@supabase/auth-helpers-nextjs';
-import { FormSchema } from '@/lib/types';
-import { cookies } from 'next/headers';
+import { z } from "zod";
+import { FormSchema } from "@/lib/types";
+import { createClient } from "../utils/supabase/server";
 
 export async function actionLoginUser({
   email,
   password,
 }: z.infer<typeof FormSchema>) {
   // Use createServerActionClient for server actions
-  const supabase = createServerActionClient({ cookies });
+  const supabase = await createClient();
   const response = await supabase.auth.signInWithPassword({
     email,
     password,
@@ -23,23 +22,20 @@ export async function actionSignUpUser({
   password,
 }: z.infer<typeof FormSchema>) {
   // Use createServerActionClient for server actions
-  const supabase = createServerActionClient({ cookies });
-  
+  const supabase = await createClient();
+
   const { data } = await supabase
-    .from('profiles')
-    .select('*')
-    .eq('email', email);
+    .from("profiles")
+    .select("*")
+    .eq("email", email);
 
   if (data?.length) {
-    return { error: { message: 'User already exists', data } };
+    return { error: { message: "User already exists", data } };
   }
 
   const response = await supabase.auth.signUp({
     email,
     password,
-    options: {
-      emailRedirectTo: `${process.env.NEXT_PUBLIC_SITE_URL}api/auth/callback`,
-    },
   });
   return response;
 }

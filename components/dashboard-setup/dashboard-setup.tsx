@@ -21,9 +21,9 @@ import { createWorkspace } from "@/lib/supabase/queries";
 import { useToast } from "../ui/use-toast";
 import { useRouter } from "next/navigation";
 import { useAppState } from "@/lib/providers/state-provider";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { CreateWorkspaceFormSchema } from "@/lib/types";
 import { z } from "zod";
+import { createClient } from "@/lib/utils/supabase/client";
 
 interface DashboardSetupProps {
   user: AuthUser;
@@ -38,7 +38,7 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
   const router = useRouter();
   const { dispatch } = useAppState();
   const [selectedEmoji, setSelectedEmoji] = useState("💼");
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const {
     register,
     handleSubmit,
