@@ -86,7 +86,10 @@ const Signup = () => {
         onChange={() => {
           if (submitError) setSubmitError("");
         }}
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={() => {
+          console.log();
+          form.handleSubmit(onSubmit);
+        }}
         className="w-full sm:justify-center sm:w-[400px]
         space-y-6 flex
         flex-col

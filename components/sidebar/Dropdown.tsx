@@ -256,7 +256,7 @@ const Dropdown: React.FC<DropdownProps> = ({
   const hoverStyles = useMemo(
     () =>
       clsx(
-        "h-full hidden rounded-sm absolute right-0 items-center justify-center",
+        "h-full hidden rounded-sm absolute right-0 items-center justify-center flex gap-2 group-hover/folder:flex group-hover/file:flex",
         {
           "group-hover/file:block": listType === "file",
           "group-hover/folder:block": listType === "folder",
@@ -345,19 +345,23 @@ const Dropdown: React.FC<DropdownProps> = ({
           </div>
           <div className={hoverStyles}>
             <TooltipComponent message="Delete Folder">
-              <Trash
-                onClick={moveToTrash}
-                size={15}
-                className="hover:dark:text-white dark:text-Neutrals/neutrals-7 transition-colors"
-              />
-            </TooltipComponent>
-            {listType === "folder" && !isEditing && (
-              <TooltipComponent message="Add File">
-                <PlusIcon
-                  onClick={addNewFile}
+              <span className="cursor-pointer">
+                <Trash
+                  onClick={moveToTrash}
                   size={15}
                   className="hover:dark:text-white dark:text-Neutrals/neutrals-7 transition-colors"
                 />
+              </span>
+            </TooltipComponent>
+            {listType === "folder" && !isEditing && (
+              <TooltipComponent message="Add File">
+                <span className="cursor-pointer">
+                  <PlusIcon
+                    onClick={addNewFile}
+                    size={15}
+                    className="hover:dark:text-white dark:text-Neutrals/neutrals-7 transition-colors"
+                  />
+                </span>
               </TooltipComponent>
             )}
           </div>
