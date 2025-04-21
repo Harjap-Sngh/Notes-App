@@ -1,6 +1,5 @@
 "use client";
 import { useAppState } from "@/lib/providers/state-provider";
-import { useSupabaseUser } from "@/lib/providers/supabase-user-provider";
 import { createClient } from "@/lib/utils/supabase/client";
 import { useRouter } from "next/navigation";
 import React from "react";
@@ -11,7 +10,6 @@ interface LogoutButtonProps {
 }
 
 const LogoutButton: React.FC<LogoutButtonProps> = ({ children }) => {
-  const { user } = useSupabaseUser();
   const { dispatch } = useAppState();
   const router = useRouter();
   const supabase = createClient();

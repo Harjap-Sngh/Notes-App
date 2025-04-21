@@ -1,7 +1,7 @@
 "use client";
 import { AuthUser } from "@supabase/supabase-js";
 import React, { useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
 import { v4 } from "uuid";
 
 import {
@@ -90,7 +90,7 @@ const DashboardSetup: React.FC<DashboardSetupProps> = ({
         logo: filePath || null,
         bannerUrl: "",
       };
-      const { data, error: createError } = await createWorkspace(newWorkspace);
+      const { error: createError } = await createWorkspace(newWorkspace);
       if (createError) {
         throw new Error();
       }

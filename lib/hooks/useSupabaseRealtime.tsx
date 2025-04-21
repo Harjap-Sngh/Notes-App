@@ -1,5 +1,5 @@
 import { createClient } from "../utils/supabase/client";
-import React, { useEffect } from "react";
+import { useEffect } from "react";
 import { useAppState } from "../providers/state-provider";
 
 import { File } from "../supabase/supabase.types";

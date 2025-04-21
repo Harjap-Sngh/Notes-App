@@ -1,10 +1,5 @@
 "use client";
-import {
-  appFoldersType,
-  appWorkspacesType,
-  useAppState,
-} from "@/lib/providers/state-provider";
-import { Folder, workspace } from "@/lib/supabase/supabase.types";
+import { useAppState } from "@/lib/providers/state-provider";
 import { UploadBannerFormSchema } from "@/lib/types";
 import { createClient } from "@/lib/utils/supabase/client";
 import React from "react";
@@ -27,11 +22,10 @@ interface BannerUploadFormProps {
 
 const BannerUploadForm: React.FC<BannerUploadFormProps> = ({ dirType, id }) => {
   const supabase = createClient();
-  const { state, workspaceId, folderId, dispatch } = useAppState();
+  const { workspaceId, folderId, dispatch } = useAppState();
   const {
     register,
     handleSubmit,
-    reset,
     formState: { isSubmitting: isUploading, errors },
   } = useForm<z.infer<typeof UploadBannerFormSchema>>({
     mode: "onChange",

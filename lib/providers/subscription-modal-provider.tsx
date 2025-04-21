@@ -1,17 +1,13 @@
-'use client';
-import { useToast } from '@/components/ui/use-toast';
+"use client";
 import {
   Dispatch,
   SetStateAction,
   createContext,
   useContext,
-  useEffect,
   useState,
-} from 'react';
-import { useSupabaseUser } from './supabase-user-provider';
-import { getUserSubscriptionStatus } from '../supabase/queries';
-import SubscriptionModal from '@/components/global/subscription-modal';
-import { ProductWirhPrice } from '../supabase/supabase.types';
+} from "react";
+import SubscriptionModal from "@/components/global/subscription-modal";
+import { ProductWirhPrice } from "../supabase/supabase.types";
 
 type SubscriptionModalContextType = {
   open: boolean;

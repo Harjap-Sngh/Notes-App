@@ -11,8 +11,6 @@ import clsx from "clsx";
 import CustomCard from "@/components/landing-page/customCard";
 import { CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import BannerImage from "../../public/BannerImage.png";
-import CalendarImage from "../../public/cal.png";
 import DiamondIcon from "../../public/icons/diamond.svg";
 import CheckIcon from "../../public/icons/check.svg";
 
@@ -78,7 +76,6 @@ const HomePage = () => {
         </div>
       </section>
 
-      
       <section className="relative">
         <div
           className="w-full

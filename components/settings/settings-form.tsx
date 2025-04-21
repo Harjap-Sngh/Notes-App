@@ -40,11 +40,9 @@ import {
   AlertDialogAction,
   AlertDialogCancel,
   AlertDialogContent,
-  AlertDialogDescription,
   AlertDialogFooter,
   AlertDialogHeader,
   AlertDialogTitle,
-  AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 
 import CollaboratorSearch from "../global/collaborator-search";
@@ -79,7 +77,7 @@ const SettingsForm = () => {
   const redirectToCustomerPortal = async () => {
     setLoadingPortal(true);
     try {
-      const { url, error } = await postData({
+      const { url } = await postData({
         url: "/api/create-portal-link",
       });
       window.location.assign(url);

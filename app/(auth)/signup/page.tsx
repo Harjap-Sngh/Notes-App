@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { zodResolver } from "@hookform/resolvers/zod";
-import clsx from "clsx";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -20,9 +19,6 @@ import { z } from "zod";
 
 import Logo from "@/public/cypresslogo.svg";
 import Loader from "@/components/global/Loader";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
-import { MailCheck } from "lucide-react";
-import { FormSchema } from "@/lib/types";
 import { actionSignUpUser } from "@/lib/server-actions/auth-actions";
 
 const SignUpFormSchema = z
@@ -47,23 +43,11 @@ const Signup = () => {
   const searchParams = useSearchParams();
   const [submitError, setSubmitError] = useState("");
   const [confirmation, setConfirmation] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
-  const [userPassword, setUserPassword] = useState("");
 
   const codeExchangeError = useMemo(() => {
     if (!searchParams) return "";
     return searchParams.get("error_description");
   }, [searchParams]);
-
-  const confirmationAndErrorStyles = useMemo(
-    () =>
-      clsx("bg-primary", {
-        "bg-red-500/10": codeExchangeError,
-        "border-red-500/50": codeExchangeError,
-        "text-red-700": codeExchangeError,
-      }),
-    [codeExchangeError]
-  );
 
   const form = useForm<z.infer<typeof SignUpFormSchema>>({
     mode: "onChange",

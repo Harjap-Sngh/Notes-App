@@ -8,7 +8,7 @@ import { collaborators } from "./schema";
 
 export const createWorkspace = async (workspace: workspace) => {
   try {
-    const response = await db.insert(workspaces).values(workspace);
+    await db.insert(workspaces).values(workspace);
     return { data: null, error: null };
   } catch (error) {
     console.log(error);
@@ -50,6 +50,7 @@ export const getFolders = async (workspaceId: string) => {
       .where(eq(folders.workspaceId, workspaceId));
     return { data: results, error: null };
   } catch (error) {
+    console.error(error);
     return { data: null, error: "Error" };
   }
 };
@@ -78,8 +79,7 @@ export const getWorkspaceDetails = async (workspaceId: string) => {
 export const getFileDetails = async (fileId: string) => {
   const isValid = validate(fileId);
   if (!isValid) {
-    data: [];
-    error: "Error";
+    console.log("Invalid fileId", fileId);
   }
   try {
     const response = (await db
@@ -107,8 +107,7 @@ export const deleteFolder = async (folderId: string) => {
 export const getFolderDetails = async (folderId: string) => {
   const isValid = validate(folderId);
   if (!isValid) {
-    data: [];
-    error: "Error";
+    console.log("Invalid folderId", folderId);
   }
 
   try {
@@ -212,7 +211,7 @@ export const getFiles = async (folderId: string) => {
 };
 
 export const addCollaborators = async (users: User[], workspaceId: string) => {
-  const response = users.forEach(async (user: User) => {
+  users.forEach(async (user: User) => {
     const userExists = await db.query.collaborators.findFirst({
       where: (u, { eq }) =>
         and(eq(u.userId, user.id), eq(u.workspaceId, workspaceId)),
@@ -226,7 +225,7 @@ export const removeCollaborators = async (
   users: User[],
   workspaceId: string
 ) => {
-  const response = users.forEach(async (user: User) => {
+  users.forEach(async (user: User) => {
     const userExists = await db.query.collaborators.findFirst({
       where: (u, { eq }) =>
         and(eq(u.userId, user.id), eq(u.workspaceId, workspaceId)),
@@ -274,7 +273,7 @@ export const getActiveProductsWithPrice = async () => {
 
 export const createFolder = async (folder: Folder) => {
   try {
-    const results = await db.insert(folders).values(folder);
+    await db.insert(folders).values(folder);
     return { data: null, error: null };
   } catch (error) {
     console.log(error);
@@ -307,10 +306,7 @@ export const updateFolder = async (
 
 export const updateFile = async (file: Partial<File>, fileId: string) => {
   try {
-    const response = await db
-      .update(files)
-      .set(file)
-      .where(eq(files.id, fileId));
+    await db.update(files).set(file).where(eq(files.id, fileId));
     return { data: null, error: null };
   } catch (error) {
     console.log(error);
