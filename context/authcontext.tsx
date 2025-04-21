@@ -26,6 +26,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // On mount, check existing session and listen for auth state changes.
   useEffect(() => {
     // Check for an existing session
+
     supabase.auth.getSession().then(({ data: { session } }) => {
       setUser(session?.user ?? null);
       setLoading(false);
@@ -48,8 +49,11 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   // Sign up function using Supabase Auth
   const signUp = async (email: string, password: string) => {
     setLoading(true);
-    const { error } = await supabase.auth.signUp({ email, password });
-    console.log(email, password);
+    const { data, error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+    });
+    console.log(data);
     setLoading(false);
     if (error) {
       throw error;

@@ -11,7 +11,7 @@ const DashboardPage = async () => {
     data: { user },
   } = await supabase.auth.getUser();
 
-  console.log("user", user);
+  console.log("user", user?.id);
 
   if (!user) return;
 

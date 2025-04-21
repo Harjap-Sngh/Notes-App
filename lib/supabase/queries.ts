@@ -55,10 +55,6 @@ export const getFolders = async (workspaceId: string) => {
 };
 
 export const getWorkspaceDetails = async (workspaceId: string) => {
-  console.log(
-    "🚀 ~ file: queries.ts:42 ~ getWorkspaceDetails ~ workspaceId:",
-    workspaceId
-  );
   const isValid = validate(workspaceId);
   if (!isValid)
     return {

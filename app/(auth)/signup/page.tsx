@@ -47,6 +47,8 @@ const Signup = () => {
   const searchParams = useSearchParams();
   const [submitError, setSubmitError] = useState("");
   const [confirmation, setConfirmation] = useState(false);
+  const [userEmail, setUserEmail] = useState("");
+  const [userPassword, setUserPassword] = useState("");
 
   const codeExchangeError = useMemo(() => {
     if (!searchParams) return "";
@@ -70,14 +72,24 @@ const Signup = () => {
   });
 
   const isLoading = form.formState.isSubmitting;
-  const onSubmit = async ({ email, password }: z.infer<typeof FormSchema>) => {
-    const { error } = await actionSignUpUser({ email, password });
+  const onSubmit = async (data: z.infer<typeof SignUpFormSchema>) => {
+    console.log("Form data:", data);
+
+    const { email, password } = data;
+
+    const { error } = await actionSignUpUser({
+      email,
+      password,
+    });
+
     if (error) {
       setSubmitError(error.message);
       form.reset();
       return;
     }
+
     setConfirmation(true);
+    router.push("/login?email=" + email);
   };
 
   return (
@@ -86,10 +98,7 @@ const Signup = () => {
         onChange={() => {
           if (submitError) setSubmitError("");
         }}
-        onSubmit={() => {
-          console.log();
-          form.handleSubmit(onSubmit);
-        }}
+        onSubmit={form.handleSubmit(onSubmit)}
         className="w-full sm:justify-center sm:w-[400px]
         space-y-6 flex
         flex-col

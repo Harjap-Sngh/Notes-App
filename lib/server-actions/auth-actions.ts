@@ -3,24 +3,28 @@
 import { z } from "zod";
 import { FormSchema } from "@/lib/types";
 import { createClient } from "../utils/supabase/server";
+import { redirect } from "next/navigation";
 
 export async function actionLoginUser({
   email,
   password,
 }: z.infer<typeof FormSchema>) {
-  // Use createServerActionClient for server actions
   const supabase = await createClient();
-  const response = await supabase.auth.signInWithPassword({
+  const { error } = await supabase.auth.signInWithPassword({
     email,
     password,
   });
-  return response;
+
+  if (error) return { error };
+
+  redirect("/dashboard");
 }
 
 export async function actionSignUpUser({
   email,
   password,
 }: z.infer<typeof FormSchema>) {
+  console.log("actionSignUpUser" + email + password);
   // Use createServerActionClient for server actions
   const supabase = await createClient();
 
@@ -34,8 +38,8 @@ export async function actionSignUpUser({
   }
 
   const response = await supabase.auth.signUp({
-    email,
-    password,
+    email: email,
+    password: password,
   });
   return response;
 }
