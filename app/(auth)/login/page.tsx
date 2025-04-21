@@ -1,124 +1,96 @@
 "use client";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import * as z from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { FormSchema } from "@/lib/types";
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import Image from "next/image";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
+import Link from "next/link";
+import Logo from "@/public/cypresslogo.svg";
 import Loader from "@/components/global/Loader";
 import { actionLoginUser } from "@/lib/server-actions/auth-actions";
-import Logo from "@/public/cypresslogo.svg";
 
-const LoginPage = () => {
+export default function Login() {
   const router = useRouter();
-  const [submitError, setSubmitError] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const form = useForm<z.infer<typeof FormSchema>>({
-    mode: "onChange",
-    resolver: zodResolver(FormSchema),
-    defaultValues: { email: "", password: "" },
-  });
-
-  const isLoading = form.formState.isSubmitting;
-
-  const onSubmit: SubmitHandler<z.infer<typeof FormSchema>> = async (
-    formData
-  ) => {
-    const { error } = await actionLoginUser(formData);
-    if (error) {
-      form.reset();
-      setSubmitError(error.message);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setLoading(true);
+    const { error: loginError } = await actionLoginUser({ email, password });
+    setLoading(false);
+    if (loginError) {
+      setError(loginError.message);
+    } else {
+      router.push("/dashboard");
     }
-    router.push("/dashboard");
   };
 
   return (
-    <Form {...form}>
+    <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-blue-50 to-blue-100 p-4">
       <form
-        onChange={() => {
-          if (submitError) setSubmitError("");
-        }}
-        onSubmit={form.handleSubmit(onSubmit)}
-        className="w-full sm:justify-center sm:w-[400px] space-y-6 flex flex-col"
+        onSubmit={handleSubmit}
+        className="w-full max-w-md bg-white p-8 rounded-2xl shadow-xl space-y-6"
       >
-        <Link
-          href="/"
-          className="
-          w-full
-          flex
-          justify-left
-          items-center"
-        >
-          <Image src={Logo} width={50} height={50} alt="image" />
-          <span
-            className="font-semibold
-          dark:text-white text-4xl first-letter:ml-2"
-          >
-            cypress.
-          </span>
-        </Link>
-        <FormDescription
-          className="
-        text-foreground/60"
-        >
-          An all-In-One Collaboration and Productivity Platform
-        </FormDescription>
-        <FormField
-          disabled={isLoading}
-          control={form.control}
-          name="email"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input type="email" placeholder="Email" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        <FormField
-          disabled={isLoading}
-          control={form.control}
-          name="password"
-          render={({ field }) => (
-            <FormItem>
-              <FormControl>
-                <Input type="password" placeholder="Password" {...field} />
-              </FormControl>
-              <FormMessage />
-            </FormItem>
-          )}
-        />
-        {submitError && <FormMessage>{submitError}</FormMessage>}
-        <Button
+        <div className="flex justify-center mb-4">
+          <Image src={Logo} alt="cypress logo" width={48} height={48} />
+        </div>
+        <h1 className="text-center text-3xl font-extrabold text-blue-700">
+          Login to Cypress
+        </h1>
+        <p className="text-center text-gray-500">
+          An all-in-one collaboration & productivity platform
+        </p>
+
+        {error && (
+          <div className="text-center text-red-600 text-sm">{error}</div>
+        )}
+
+        <div className="space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="w-full px-4 py-3 border border-gray-300 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+          />
+          <div className="relative">
+            <input
+              type="password"
+              placeholder="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              required
+              className="w-full px-4 py-3 border border-gray-300 rounded-lg text-black placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+            />
+            {/* Optionally add a toggle icon here to show/hide password */}
+          </div>
+        </div>
+
+        <button
           type="submit"
-          className="w-full p-6"
-          size="lg"
-          disabled={isLoading}
+          disabled={loading}
+          className={`w-full py-3 rounded-lg text-white font-semibold focus:outline-none focus:ring-2 focus:ring-blue-600 transition ease-in-out duration-200 ${
+            loading
+              ? "bg-blue-300 cursor-not-allowed"
+              : "bg-gradient-to-r from-blue-500 to-blue-600 hover:from-blue-600 hover:to-blue-700"
+          }`}
         >
-          {!isLoading ? "Login" : <Loader />}
-        </Button>
-        <span className="self-container">
-          Dont have an account?{" "}
-          <Link href="/signup" className="text-primary">
+          {loading ? <Loader /> : "Sign In"}
+        </button>
+
+        <p className="text-center text-sm text-gray-500">
+          Don't have an account?{" "}
+          <Link
+            href="/signup"
+            className="text-blue-600 font-medium hover:underline"
+          >
             Sign Up
           </Link>
-        </span>
+        </p>
       </form>
-    </Form>
+    </div>
   );
-};
-
-export default LoginPage;
+}
