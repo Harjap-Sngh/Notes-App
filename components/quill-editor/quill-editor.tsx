@@ -381,70 +381,100 @@ const QuillEditor: React.FC<QuillEditorProps> = ({
   useEffect(() => {
     if (quill === null || socket === null || !fileId || !user) return;
 
-    const selectionChangeHandler = (cursorId: string) => {
+    const handleSelectionChange = (cursorId: string) => {
       return (range: any, oldRange: any, source: any) => {
         if (source === "user" && cursorId) {
           socket.emit("send-cursor-move", range, fileId, cursorId);
         }
       };
     };
-    const quillHandler = (delta: any, oldDelta: any, source: any) => {
+
+    const handleTextChange = async (delta: any, oldDelta: any, source: any) => {
       if (source !== "user") return;
-      if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
-      setSaving(true);
+
       const contents = quill.getContents();
       const quillLength = quill.getLength();
+
+      if (saveTimerRef.current) {
+        clearTimeout(saveTimerRef.current);
+      }
+
+      setSaving(true);
+
       saveTimerRef.current = setTimeout(async () => {
-        if (contents && quillLength !== 1 && fileId) {
-          if (dirType == "workspace") {
+        try {
+          if (!contents || quillLength === 1 || !fileId) {
+            console.log("Skipping save: empty content or missing ID");
+            setSaving(false);
+            return;
+          }
+
+          const contentString = JSON.stringify(contents);
+          if (dirType === "workspace") {
             dispatch({
               type: "UPDATE_WORKSPACE",
               payload: {
-                workspace: { data: JSON.stringify(contents) },
+                workspace: { data: contentString },
                 workspaceId: fileId,
               },
             });
             await updateWorkspace({ data: JSON.stringify(contents) }, fileId);
           }
-          if (dirType == "folder") {
-            if (!workspaceId) return;
+
+          if (dirType === "folder") {
+            if (!workspaceId) throw new Error("Missing workspaceId for folder");
             dispatch({
               type: "UPDATE_FOLDER",
               payload: {
-                folder: { data: JSON.stringify(contents) },
+                folder: { data: contentString },
                 workspaceId,
                 folderId: fileId,
               },
             });
             await updateFolder({ data: JSON.stringify(contents) }, fileId);
+            const { error } = await updateFolder(
+              { data: contentString },
+              fileId
+            );
+            if (error) throw error;
           }
-          if (dirType == "file") {
-            if (!workspaceId || !folderId) return;
+
+          if (dirType === "file") {
+            if (!workspaceId || !folderId)
+              throw new Error("Missing workspaceId or folderId for file");
             dispatch({
               type: "UPDATE_FILE",
               payload: {
-                file: { data: JSON.stringify(contents) },
+                file: { data: contentString },
                 workspaceId,
-                folderId: folderId,
+                folderId,
                 fileId,
               },
             });
             await updateFile({ data: JSON.stringify(contents) }, fileId);
+            const { error } = await updateFile({ data: contentString }, fileId);
+            if (error) throw error;
           }
+        } catch (err) {
+          console.error("❌ Save failed:", err);
+        } finally {
+          setSaving(false);
         }
-        setSaving(false);
       }, 850);
+
+      // Emit changes to socket
       socket.emit("send-changes", delta, fileId);
     };
-    quill.on("text-change", quillHandler);
-    quill.on("selection-change", selectionChangeHandler(user.id));
+
+    quill.on("text-change", handleTextChange);
+    quill.on("selection-change", handleSelectionChange(user.id));
 
     return () => {
-      quill.off("text-change", quillHandler);
-      quill.off("selection-change", selectionChangeHandler);
+      quill.off("text-change", handleTextChange);
+      quill.off("selection-change", handleSelectionChange);
       if (saveTimerRef.current) clearTimeout(saveTimerRef.current);
     };
-  }, [quill, socket, fileId, user, details, folderId, workspaceId, dispatch]);
+  }, [quill, socket, fileId, user, folderId, workspaceId, dirType, dispatch]);
 
   useEffect(() => {
     if (quill === null || socket === null) return;
