@@ -43,7 +43,7 @@ interface QuillEditorProps {
   fileId: string;
   dirType: "workspace" | "folder" | "file";
 }
-let TOOLBAR_OPTIONS = [
+const TOOLBAR_OPTIONS = [
   ["bold", "italic", "underline", "strike"], // toggled buttons
   ["blockquote", "code-block"],
 
