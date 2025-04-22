@@ -1,17 +1,33 @@
-export const dynamic = 'force-dynamic';
+// app/(main)/dashboard/[workspaceId]/[folderId]/page.tsx
 
-import React from 'react';
-import QuillEditor from '@/components/quill-editor/quill-editor';
-import { getFolderDetails } from '@/lib/supabase/queries';
-import { redirect } from 'next/navigation';
+export const dynamic = "force-dynamic";
 
-const Folder = async ({ params }: { params: { folderId: string } }) => {
-  const { folderId } = await params;
+import React from "react";
+import { redirect } from "next/navigation";
+import QuillEditor from "@/components/quill-editor/quill-editor";
+import { getFolderDetails } from "@/lib/supabase/queries";
+
+type Props = {
+  // Next.js v15+ passes params as a Promise you must await
+  params: Promise<{
+    workspaceId: string;
+    folderId:    string;
+  }>;
+  // only include if you ever read query‑string params
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
+};
+
+const Folder = async ({ params }: Props) => {
+  // await all dynamic segments so TS matches Next’s PageProps
+  const { workspaceId, folderId } = await params;
+
   const { data, error } = await getFolderDetails(folderId);
-  if (error || !data.length) redirect('/dashboard');
+  if (error || !data.length) {
+    redirect("/dashboard");
+  }
 
   return (
-    <div className="relative ">
+    <div className="relative">
       <QuillEditor
         dirType="folder"
         fileId={folderId}
