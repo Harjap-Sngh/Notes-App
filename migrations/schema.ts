@@ -1,10 +1,20 @@
-import { pgTable, foreignKey, text, uuid, jsonb, integer, boolean, timestamp, bigint, pgEnum } from "drizzle-orm/pg-core"
+import { pgTable, uuid, text, jsonb, timestamp, foreignKey, integer, boolean, bigint, pgEnum } from "drizzle-orm/pg-core"
 import { sql } from "drizzle-orm"
 
 export const pricingPlanInterval = pgEnum("pricing_plan_interval", ['day', 'week', 'month', 'year'])
 export const pricingType = pgEnum("pricing_type", ['one_time', 'recurring'])
 export const subscriptionStatus = pgEnum("subscription_status", ['trialing', 'active', 'canceled', 'incomplete', 'incomplete_expired', 'past_due', 'unpaid'])
 
+
+export const users = pgTable("users", {
+	id: uuid().primaryKey().notNull(),
+	fullName: text("full_name"),
+	avatarUrl: text("avatar_url"),
+	billingAddress: jsonb("billing_address"),
+	updatedAt: timestamp("updated_at", { withTimezone: true, mode: 'string' }),
+	paymentMethod: jsonb("payment_method"),
+	email: text(),
+});
 
 export const subscriptions = pgTable("subscriptions", {
 	id: text().primaryKey().notNull(),
@@ -37,16 +47,6 @@ export const products = pgTable("products", {
 	description: text(),
 	image: text(),
 	metadata: jsonb(),
-});
-
-export const users = pgTable("users", {
-	id: uuid().primaryKey().notNull(),
-	fullName: text("full_name"),
-	avatarUrl: text("avatar_url"),
-	billingAddress: jsonb("billing_address"),
-	updatedAt: timestamp("updated_at", { withTimezone: true, mode: 'string' }),
-	paymentMethod: jsonb("payment_method"),
-	email: text(),
 });
 
 export const workspaces = pgTable("workspaces", {

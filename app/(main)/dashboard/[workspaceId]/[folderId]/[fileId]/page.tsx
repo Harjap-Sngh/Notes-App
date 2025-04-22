@@ -5,7 +5,7 @@ import QuillEditor from "@/components/quill-editor/quill-editor";
 import { getFileDetails } from "@/lib/supabase/queries";
 import { redirect } from "next/navigation";
 
-const File = async ({ params }: { params: { fileId: string } }) => {
+const File = async ({ params }: any) => {
   const { fileId } = await params;
   const { data, error } = await getFileDetails(fileId);
   if (error || !data.length) redirect("/dashboard");

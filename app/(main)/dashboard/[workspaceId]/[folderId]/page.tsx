@@ -1,14 +1,15 @@
-export const dynamic = 'force-dynamic';
+export const dynamic = "force-dynamic";
 
-import React from 'react';
-import QuillEditor from '@/components/quill-editor/quill-editor';
-import { getFolderDetails } from '@/lib/supabase/queries';
-import { redirect } from 'next/navigation';
+import React from "react";
+import QuillEditor from "@/components/quill-editor/quill-editor";
+import { getFolderDetails } from "@/lib/supabase/queries";
+import { redirect } from "next/navigation";
+import { any } from "zod";
 
-const Folder = async ({ params }: { params: { folderId: string } }) => {
+const Folder = async ({ params }: any) => {
   const { folderId } = await params;
   const { data, error } = await getFolderDetails(folderId);
-  if (error || !data.length) redirect('/dashboard');
+  if (error || !data.length) redirect("/dashboard");
 
   return (
     <div className="relative ">
