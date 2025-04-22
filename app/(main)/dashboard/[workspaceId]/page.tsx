@@ -44,4 +44,4 @@ const Workspace = async ({ params }: any) => {
   );
 };
 
-export default WorkspacePage;
+export default Workspace;

@@ -11,8 +11,8 @@ type Props = {
   // Next.js now passes these as Promises you must await:
   params: Promise<{
     workspaceId: string;
-    folderId:   string;
-    fileId:     string;
+    folderId: string;
+    fileId: string;
   }>;
   // only include this if you actually read query‑string params:
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
@@ -27,13 +27,9 @@ const File = async ({ params }: any) => {
 
   return (
     <div className="relative">
-      <QuillEditor
-        dirType="file"
-        fileId={fileId}
-        dirDetails={data[0] || {}}
-      />
+      <QuillEditor dirType="file" fileId={fileId} dirDetails={data[0] || {}} />
     </div>
   );
 };
 
-export default FilePage;
+export default File;
