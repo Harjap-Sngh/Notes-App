@@ -7,8 +7,6 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "pull": "drizzle-kit pull --dialect=postgresql --url=postgresql://postgres.qklvfydgsfasuzelpesb:harjap9463628874@aws-0-us-west-1.pooler.supabase.com:6543/postgres --out=migrations",
-    "push": "drizzle-kit push --dialect=postgresql --schema=./lib/supabase/schema.ts --url=postgresql://postgres.qklvfydgsfasuzelpesb:harjap9463628874@aws-0-us-west-1.pooler.supabase.com:6543/postgres",
     "generate": "drizzle-kit generate",
     "drop": "drizzle-kit drop",
     "check": "drizzle-kit check",
