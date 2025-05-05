@@ -13,6 +13,7 @@ import { CardContent, CardDescription, CardTitle } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import DiamondIcon from "../../public/icons/diamond.svg";
 import CheckIcon from "../../public/icons/check.svg";
+import Link from "next/link";
 
 const HomePage = () => {
   return (
@@ -24,14 +25,16 @@ const HomePage = () => {
             title="All-In-One Collaboration and Productivity Platform"
           />
           <div className="bg-white p-[2px] rounded-xl bg-gradient-to-r from-brand-primaryBlue to-brand-primaryPurple sm:w-[300px] mt-6">
-            <Button
-              variant="secondary"
-              className="w-full rounded-[10px] p-6 text-2xl bg-background"
-            >
-              Get Cypress Free
-            </Button>
+            <Link href="/login">
+              <Button
+                variant="secondary"
+                className="w-full rounded-[10px] p-6 text-2xl bg-background"
+              >
+                Get Started
+              </Button>
+            </Link>
           </div>
-          <div className="md:mt-[-90px] sm:w-full w-[750px] flex justify-center items-center mt-[-40px] relative sm:ml-0 ml-[-50px]">
+          <div className="md:mt-[90px] sm:w-full w-[750px] flex justify-center items-center mt-[40px] relative sm:ml-0 ml-[-50px]">
             <Image src={Banner} alt="Application Banner" />
             <div className="bottom-0 top-[50%] bg-gradient-to-t dark:from-background left-0 right-0 absolute"></div>
           </div>
